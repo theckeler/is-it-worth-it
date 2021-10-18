@@ -1,10 +1,15 @@
 import React, { useEffect, useState } from "react";
+import Totaled from "./components/Totaled";
+import Footer from "./components/Footer";
+import Form from "./components/Form";
+import Lighterpack from "./components/Lighterpack";
+import CSVReader from "react-csv-reader";
+//import { RandomNum } from "./components/randomNum";
+
 import "./App.min.css";
 
 const App = () => {
-  const [ciWeight, setCiWeight] = useState(0);
-  const [newWeight, setNewWeight] = useState(0);
-  const [newCost, setNewCost] = useState(0);
+  const [qty, setQTY] = useState(1);
 
   const [weightSaved, setWeightSaved] = useState(0);
   const [dollarsSaved, setDollarsSaved] = useState(0);
@@ -14,47 +19,69 @@ const App = () => {
   const [totalDollars, setTotalDollars] = useState(0);
 
   const [backpack, setBackpack] = useState([]);
+  const [lighterpack, setLighterpack] = useState([]);
+
+  const [formToggle, setFormToggle] = useState(true);
+  const [formDefaults, setFormDeaults] = useState([]);
+  const [formInputs, setFormInputs] = useState([]);
+
+  const updateTotals = (e) => {
+    console.log("updateTotals");
+    let formValues = {};
+    document
+      .querySelector("#gear-form")
+      .querySelectorAll("input")
+      .forEach(function (element, i) {
+        formValues[element.name] = element.value;
+      });
+    setFormInputs(formValues);
+  };
 
   useEffect(() => {
-    let weightPerOz = 0;
-    let weightCal = 0;
-
-    if ((ciWeight > 0) & (newWeight > 0)) {
-      weightCal = ciWeight - newWeight;
-      setWeightSaved(parseFloat(weightCal).toFixed(2));
+    if ((formInputs.ciWeight > 0) & (formInputs.newWeight > 0)) {
+      setWeightSaved(
+        parseFloat(formInputs.ciWeight - formInputs.newWeight).toFixed(2)
+      );
     }
 
-    if ((ciWeight > 0) & (newCost > 0)) {
-      weightPerOz = parseFloat(newCost / newWeight).toFixed(2);
-      setDollarsSaved(weightPerOz);
+    if ((formInputs.ciWeight > 0) & (formInputs.newCost > 0)) {
+      setDollarsSaved(
+        parseFloat(formInputs.newCost / formInputs.newWeight).toFixed(2)
+      );
     }
-  }, [ciWeight, newWeight, newCost]);
+  }, [formInputs]);
 
   const submitForm = (form) => {
+    console.log("submitForm");
     form.preventDefault();
+    setFormDeaults([]);
+    setWeightSaved(0);
+    setDollarsSaved(0);
     let item = {};
-
     const formInput = document.querySelectorAll("input:not(.total)");
     formInput.forEach((input) => {
       if (input.value) {
         item[input.name] = input.value;
       }
     });
-
     let gears = [item];
     setBackpack((prevState) => [...prevState, ...gears]);
+    document.querySelector("#gear-form").reset();
 
     //document.cookie = "Waiting";
   };
 
-  const handleClick = (i) => {
-    const spliceMe = [...backpack];
-    spliceMe.splice(i, 1);
-    setBackpack(spliceMe);
-  };
+  useEffect(() => {
+    //console.log("useEffect formDefaults", formDefaults);
+    if (formDefaults.ci) {
+      setWeightSaved(0);
+      setDollarsSaved(0);
+      setFormToggle(true);
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+  }, [formDefaults]);
 
   useEffect(() => {
-    //console.log("backpack", backpack);
     let totalCost = 0,
       totalWeight = 0,
       totalDollars = 0;
@@ -70,151 +97,113 @@ const App = () => {
     setTotalDollars(parseFloat(totalDollars).toFixed(2));
   }, [backpack]);
 
+  const importCSV = (gear, fileInfo, originalFile) => {
+    gear.splice(0, 1);
+    let newGear = gear.map(function (item, i) {
+      let newObject = {};
+      newObject["Category"] = item[1];
+      newObject["ci"] = item[0];
+      newObject["ciWeight"] = item[4];
+      newObject["ciPrice"] = item[7];
+      newObject["qty"] = item[3] > 0 ? item[3] : "1";
+      newObject["unit"] = item[5];
+      return newObject;
+    });
+    setFormToggle(false);
+    setLighterpack(newGear);
+  };
+
+  // console.log(backpack);
   return (
     <>
       <header>
         <h1>Backpacking Gear Upgrades:</h1>
+        <ul className="buttons">
+          <li>
+            {lighterpack.length ? (
+              ""
+            ) : (
+              <CSVReader
+                label="Upload Lighterpack CSV"
+                onFileLoaded={(data, fileInfo, originalFile) =>
+                  importCSV(data, fileInfo, originalFile)
+                }
+              />
+            )}
+          </li>
+          <li>
+            {backpack.length ? (
+              <button
+                onClick={(e) => {
+                  setFormToggle(!formToggle);
+                }}
+              >
+                {`${formToggle ? "Close" : "Open"} Form`}
+              </button>
+            ) : (
+              ""
+            )}
+          </li>
+        </ul>
       </header>
 
       <main>
-        <form id="gear-form" onSubmit={(e) => submitForm(e)}>
-          <ul className="item" id="item-1">
-            <li>
-              <label htmlFor="item_type">Item Type</label>
-              <input
-                name="itemType"
-                id="item_type"
-                placeholder="Item Type"
-                required
-              ></input>
-            </li>
-            <li>
-              <label htmlFor="ci">Current Item</label>
-              <input
-                name="ci"
-                id="ci"
-                placeholder="Current Item"
-                required
-              ></input>
-            </li>
-            <li>
-              <label htmlFor="ci_weight">Current Item Weight (oz)</label>
-              <input
-                name="ciWeight"
-                id="ci_weight"
-                type="number"
-                placeholder="Current Item Weight (oz)"
-                onChange={(e) => setCiWeight(e.target.value)}
-                step=".01"
-                required
-              ></input>
-            </li>
-            <li>
-              <label htmlFor="new">New Item</label>
-              <input name="new" id="new" placeholder="New Item"></input>
-            </li>
-            <li>
-              <label htmlFor="new_weight">New Item Weight (oz)</label>
-              <input
-                name="newWeight"
-                id="new_weight"
-                type="number"
-                step=".01"
-                placeholder="New Item Weight (oz)"
-                required
-                onChange={(e) => setNewWeight(e.target.value)}
-              ></input>
-            </li>
-            <li>
-              <label htmlFor="new_cost">New Item Cost</label>
-              <input
-                name="newCost"
-                id="new_cost"
-                type="number"
-                placeholder="New Item Cost"
-                required
-                onChange={(e) => setNewCost(e.target.value)}
-              ></input>
-            </li>
-            <li>
-              <input
-                type="hidden"
-                name="weightSaved"
-                value={weightSaved}
-              ></input>
-              <input
-                type="hidden"
-                name="dollarsSaved"
-                value={dollarsSaved}
-              ></input>
-              <button>Add</button>
-            </li>
-          </ul>
-        </form>
+        <div>
+          {formToggle ? (
+            <>
+              <h2>Add Gear</h2>
+              <Form
+                qty={qty}
+                weightSaved={weightSaved}
+                dollarsSaved={dollarsSaved}
+                formDefaults={formDefaults}
+                submitForm={submitForm}
+                updateTotals={updateTotals}
+              />
+            </>
+          ) : (
+            ""
+          )}
 
-        <div className="totaled">
-          <ul className="totaled-list" id="totaledList">
-            <li>
-              <ul className="row top">
-                <li>Item Type</li>
-                <li>Current Item</li>
-                <li>Current Item Weight</li>
-                <li>New Item</li>
-                <li>New Weight</li>
-                <li>New Cost</li>
-                <li>Weight Saved</li>
-                <li>Dollars Per Saved</li>
-                <li></li>
-              </ul>
-            </li>
-            {backpack.map((gear, i) => {
-              return (
-                <li
-                  key={Math.floor(100000000 + Math.random() * 900000000)}
-                  id={`row-${i}`}
-                >
-                  <button onClick={(e) => handleClick(i)}>&#x2715;</button>
-                  <ul className="row">
-                    <li>
-                      <strong>{gear.itemType}</strong>
-                    </li>
-                    <li>{gear.ci}</li>
-                    <li>{gear.ciWeight}</li>
-                    <li>{gear.new}</li>
-                    <li>{gear.newWeight}oz</li>
-                    <li>${gear.newCost}</li>
-                    <li>{gear.weightSaved}oz</li>
-                    <li>{gear.dollarsSaved}oz</li>
-                  </ul>
-                </li>
-              );
-            })}
-          </ul>
+          <div className="totaled">
+            <ul className="totaled-list" id="totaledList">
+              <Totaled
+                backpack={backpack}
+                setBackpack={setBackpack}
+                setQTY={setQTY}
+              />
+            </ul>
+          </div>
         </div>
+
+        {lighterpack.length ? (
+          <>
+            <h2>Your Lighterpack Items:</h2>
+            <div className="lighterpack">
+              <ul className="totaled-list" id="totaledList">
+                <Lighterpack
+                  lighterpack={lighterpack}
+                  setLighterpack={setLighterpack}
+                  setFormToggle={setFormToggle}
+                  setFormDeaults={setFormDeaults}
+                />
+              </ul>
+            </div>
+          </>
+        ) : (
+          ""
+        )}
       </main>
 
       <footer>
-        {(weightSaved > 0) & (dollarsSaved > 0) ? (
-          <div className="results">
-            <ul>
-              <li>Item: {weightSaved}oz Saved</li>
-              <li>Item: &#36;{dollarsSaved} Per oz Saved</li>
-            </ul>
-          </div>
-        ) : (
-          ""
-        )}
-        {(totalCost > 0) & (totalWS > 0) & (totalDollars > 0) ? (
-          <div className="totals" id="total">
-            <ul>
-              <li>Total &#36;{totalCost}</li>
-              <li>Saved {totalWS}oz</li>
-              <li>&#36;{totalDollars} Per oz</li>
-            </ul>
-          </div>
-        ) : (
-          ""
-        )}
+        <Footer
+          weightSaved={weightSaved}
+          dollarsSaved={dollarsSaved}
+          totalCost={totalCost}
+          totalWS={totalWS}
+          totalDollars={totalDollars}
+          formToggle={formToggle}
+        />
       </footer>
     </>
   );
