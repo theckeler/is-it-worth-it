@@ -9,3 +9,9 @@ Created this for fun based off of
 
 View project at
 [isitworthit.consumedesign.com](http://isitworthit.consumedesign.com/)
+
+## To Do:
+
+- CSS needs a big clean up as well as the html.
+- Relate the costs to one another?
+- Ability to save your list into a mongoDB.

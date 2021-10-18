@@ -26,7 +26,7 @@ const App = () => {
   const [formInputs, setFormInputs] = useState([]);
 
   const updateTotals = (e) => {
-    console.log("updateTotals");
+    //console.log("updateTotals");
     let formValues = {};
     document
       .querySelector("#gear-form")
@@ -52,7 +52,7 @@ const App = () => {
   }, [formInputs]);
 
   const submitForm = (form) => {
-    console.log("submitForm");
+    // console.log("submitForm");
     form.preventDefault();
     setFormDeaults([]);
     setWeightSaved(0);

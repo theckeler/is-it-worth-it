@@ -3,7 +3,7 @@ import { RandomNum } from "./randomNum";
 
 const Lighterpack = ({ lighterpack, setFormDeaults }) => {
   const handleClick = (defaults) => {
-    console.log("Lighterpack handleClick");
+    //console.log("Lighterpack handleClick");
     defaults["dynamicKey"] = RandomNum();
     setFormDeaults(defaults);
   };
