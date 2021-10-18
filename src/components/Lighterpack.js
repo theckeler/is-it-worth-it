@@ -22,7 +22,7 @@ const Lighterpack = ({ lighterpack, setFormDeaults }) => {
                     &#43;
                   </button>
                 </span>
-                <GearRow gear={gear} setQTY="" />
+                <GearRow gear={gear} removeNewGear="1" setQTY="" />
               </li>
             );
           })

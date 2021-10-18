@@ -1,4 +1,4 @@
-const GearRow = ({ gear, setQTY }) => {
+const GearRow = ({ gear, setQTY, removeNewGear }) => {
   return (
     <>
       <ul className="row row-2">
@@ -26,20 +26,26 @@ const GearRow = ({ gear, setQTY }) => {
             <li>&#36;{gear.ciPrice}</li>
           </ul>
         </li>
-        <li>
-          <strong>New Gear</strong>
-          <ul className="columns">
-            <li>{gear.new}</li>
-            <li>{gear.newWeight}oz</li>
-            <li>&#36;{gear.newCost}</li>
-          </ul>
-        </li>
-        <li>
-          <strong>Weight Saved:</strong> {gear.weightSaved}oz
-        </li>
-        <li>
-          <strong>Cash Saved:</strong> &#36;{gear.dollarsSaved}
-        </li>
+        {!removeNewGear ? (
+          <>
+            <li>
+              <strong>New Gear</strong>
+              <ul className="columns">
+                <li>{gear.new}</li>
+                <li>{gear.newWeight}oz</li>
+                <li>&#36;{gear.newCost}</li>
+              </ul>
+            </li>
+            <li>
+              <strong>Weight Saved:</strong> {gear.weightSaved}oz
+            </li>
+            <li>
+              <strong>Cash Saved:</strong> &#36;{gear.dollarsSaved}
+            </li>
+          </>
+        ) : (
+          ""
+        )}
       </ul>
     </>
   );
