@@ -18,7 +18,7 @@ const Totaled = ({ backpack, setBackpack, setQTY }) => {
                 &#x2715;
               </button>
             </span>
-            <GearRow gear={gear} setQTY={setQTY} />
+            <GearRow gear={gear} />
           </li>
         );
       })}
