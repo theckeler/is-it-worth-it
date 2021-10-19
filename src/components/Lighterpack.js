@@ -1,5 +1,5 @@
-import GearRow from "./gearRow";
-import { RandomNum } from "./randomNum";
+import GearRow from "./GearRow";
+import { RandomNum } from "./RandomNum";
 
 const Lighterpack = ({ lighterpack, setFormDeaults }) => {
   const handleClick = (defaults) => {

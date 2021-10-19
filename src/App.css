@@ -36,6 +36,8 @@ body.active {
 
 img {
   display: block;
+  width: 100%;
+  height: auto;
 }
 
 header {
@@ -51,6 +53,9 @@ header h1 {
 main {
   padding: 20px 20px 100px 20px;
   min-height: 120vh;
+}
+main section:nth-child(1n+2) {
+  margin-top: 40px;
 }
 
 .buttons {
@@ -108,6 +113,54 @@ h2 {
   border-bottom: 1px solid #5325d3;
 }
 
+input,
+button {
+  width: 100%;
+  padding: 12px 10px;
+  border: 2px solid #929292;
+  border-radius: 4px;
+}
+
+input:focus, input:hover {
+  background: #f8f8f8;
+  border-color: #e02424;
+  outline: none;
+}
+
+button,
+input[type=submit] {
+  text-transform: uppercase;
+  font-weight: 600;
+  background: #e25429;
+  border-color: #333;
+  border-radius: 4px;
+  color: #000;
+  -webkit-transition: all 0.2s;
+  transition: all 0.2s;
+}
+button.add,
+input[type=submit].add {
+  background: #5e8cee;
+}
+button.square,
+input[type=submit].square {
+  padding: 0;
+  color: #fff;
+  width: 30px;
+  height: 30px;
+}
+button:hover,
+input[type=submit]:hover {
+  background: #b44422;
+  border-color: #000;
+  outline: none;
+  cursor: pointer;
+}
+
+input[type=submit] {
+  margin-top: 20px;
+}
+
 .csv-reader-input input {
   display: none;
 }
@@ -126,7 +179,6 @@ form ul li,
 .totaled ul li,
 .lighterpack ul li {
   list-style: none;
-  padding: 6px 0;
 }
 form label,
 .results label,
@@ -134,110 +186,21 @@ form label,
 .totaled label,
 .lighterpack label {
   display: block;
-  margin-bottom: 6px;
-}
-form input,
-form button,
-.results input,
-.results button,
-.totals input,
-.totals button,
-.totaled input,
-.totaled button,
-.lighterpack input,
-.lighterpack button {
-  width: 100%;
-  padding: 12px 10px;
-  border: 2px solid #929292;
-  border-radius: 4px;
-}
-form input:focus, form input:hover,
-.results input:focus,
-.results input:hover,
-.totals input:focus,
-.totals input:hover,
-.totaled input:focus,
-.totaled input:hover,
-.lighterpack input:focus,
-.lighterpack input:hover {
-  background: #f8f8f8;
-  border-color: #e02424;
-  outline: none;
-}
-form button,
-form input[type=submit],
-.results button,
-.results input[type=submit],
-.totals button,
-.totals input[type=submit],
-.totaled button,
-.totaled input[type=submit],
-.lighterpack button,
-.lighterpack input[type=submit] {
-  text-transform: uppercase;
-  font-weight: 600;
-  background: #e25429;
-  border-color: #333;
-  border-radius: 4px;
-  color: #000;
-  -webkit-transition: all 0.2s;
-  transition: all 0.2s;
-}
-form button.add,
-form input[type=submit].add,
-.results button.add,
-.results input[type=submit].add,
-.totals button.add,
-.totals input[type=submit].add,
-.totaled button.add,
-.totaled input[type=submit].add,
-.lighterpack button.add,
-.lighterpack input[type=submit].add {
-  background: #5e8cee;
-}
-form button.square,
-form input[type=submit].square,
-.results button.square,
-.results input[type=submit].square,
-.totals button.square,
-.totals input[type=submit].square,
-.totaled button.square,
-.totaled input[type=submit].square,
-.lighterpack button.square,
-.lighterpack input[type=submit].square {
-  padding: 0;
-  color: #fff;
-  width: 30px;
-  height: 30px;
-}
-form button:hover,
-form input[type=submit]:hover,
-.results button:hover,
-.results input[type=submit]:hover,
-.totals button:hover,
-.totals input[type=submit]:hover,
-.totaled button:hover,
-.totaled input[type=submit]:hover,
-.lighterpack button:hover,
-.lighterpack input[type=submit]:hover {
-  background: #b44422;
-  border-color: #000;
-  outline: none;
-  cursor: pointer;
+  margin: 6px 0;
 }
 
-.totaled-list {
+.list {
   margin-top: 6px;
 }
-.totaled-list > li {
+.list > li {
   display: grid;
   grid-template-columns: 50px 1fr;
   padding: 0 4px;
 }
-.totaled-list > li:nth-child(even) {
+.list > li:nth-child(even) {
   background: whitesmoke;
 }
-.totaled-list .row {
+.list .row {
   -webkit-box-orient: vertical;
   -webkit-box-direction: normal;
       -ms-flex-direction: column;
@@ -246,25 +209,24 @@ form input[type=submit]:hover,
   -ms-flex-preferred-size: 100%;
       flex-basis: 100%;
 }
-.totaled-list .row > li {
+.list .row > li {
   font-size: 16px;
-  padding: 4px 6px;
 }
-.totaled-list .row > li button {
+.list .row > li button {
   padding: 2px 4px;
   border: 0;
   color: #fff;
   opacity: 0.5;
 }
-.totaled-list .row > li button:hover {
+.list .row > li button:hover {
   opacity: 1;
 }
-.totaled-list .columns {
+.list .columns {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
 }
-.totaled-list .columns > * {
+.list .columns > * {
   -ms-flex-preferred-size: 100%;
       flex-basis: 100%;
 }

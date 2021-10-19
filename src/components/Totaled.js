@@ -1,5 +1,5 @@
-import GearRow from "./gearRow";
-import { RandomNum } from "./randomNum";
+import GearRow from "./GearRow";
+import { RandomNum } from "./RandomNum";
 
 const Totaled = ({ backpack, setBackpack, setQTY }) => {
   const handleClick = (i) => {
@@ -12,7 +12,7 @@ const Totaled = ({ backpack, setBackpack, setQTY }) => {
     <>
       {backpack.map((gear, i) => {
         return (
-          <li key={RandomNum()} id={`row-${i}`}>
+          <li key={RandomNum()}>
             <span className="row row-1">
               <button className="square" onMouseDown={(e) => handleClick(i)}>
                 &#x2715;

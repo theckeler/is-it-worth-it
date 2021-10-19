@@ -148,7 +148,7 @@ const App = () => {
       </header>
 
       <main>
-        <div>
+        <section className="section-1">
           {formToggle ? (
             <>
               <h2>Add Gear</h2>
@@ -166,7 +166,7 @@ const App = () => {
           )}
 
           <div className="totaled">
-            <ul className="totaled-list" id="totaledList">
+            <ul className="list">
               <Totaled
                 backpack={backpack}
                 setBackpack={setBackpack}
@@ -174,25 +174,27 @@ const App = () => {
               />
             </ul>
           </div>
-        </div>
+        </section>
 
-        {lighterpack.length ? (
-          <>
-            <h2>Your Lighterpack Items:</h2>
-            <div className="lighterpack">
-              <ul className="totaled-list" id="totaledList">
-                <Lighterpack
-                  lighterpack={lighterpack}
-                  setLighterpack={setLighterpack}
-                  setFormToggle={setFormToggle}
-                  setFormDeaults={setFormDeaults}
-                />
-              </ul>
-            </div>
-          </>
-        ) : (
-          ""
-        )}
+        <section className="section-2">
+          {lighterpack.length ? (
+            <>
+              <h2>Your Lighterpack Items:</h2>
+              <div className="lighterpack">
+                <ul className="list">
+                  <Lighterpack
+                    lighterpack={lighterpack}
+                    setLighterpack={setLighterpack}
+                    setFormToggle={setFormToggle}
+                    setFormDeaults={setFormDeaults}
+                  />
+                </ul>
+              </div>
+            </>
+          ) : (
+            ""
+          )}
+        </section>
       </main>
 
       <footer>

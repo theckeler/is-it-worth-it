@@ -36,7 +36,7 @@ const GearRow = ({ gear, setQTY, removeNewGear }) => {
                 <li>&#36;{gear.newCost}</li>
               </ul>
             </li>
-            <li>
+            <li className="saved">
               <strong>Weight Saved:</strong> {gear.weightSaved}oz
             </li>
             <li>
